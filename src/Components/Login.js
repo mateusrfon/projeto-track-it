@@ -1,11 +1,27 @@
 import styled from 'styled-components';
 
+import Logo from '../images/Logo.svg';
+
 export default function Login({ type }) {
+
+    function Signin() {
+        if (type === 'signin') {
+            return (
+                <>
+                    <Input placeholder='nome'/>
+                    <Input placeholder='foto'/>
+                </>
+            );
+        }
+        return '';
+    }
+
     return (
         <Body>
-            <TrackIt>TrackIt</TrackIt>
+            <TrackIt src={Logo} alt="Logo"/>
             <Input placeholder='email'/>
             <Input placeholder='senha'/>
+            <Signin />
             <Btn>{type === 'login' ? 'Entrar' : 'Cadastrar'}</Btn>
             <Question>{type === 'login' ?
              'Não tem uma conta? Cadastre-se!' : 
@@ -15,6 +31,7 @@ export default function Login({ type }) {
     );
 }
 
+//Styled-Components
 const Body = styled.div`
     height: 100vh;
     background-color: #FFF;
@@ -24,13 +41,10 @@ const Body = styled.div`
     padding: 68px 36px;
 `;
 
-const TrackIt = styled.h1`
-    font-family: 'Playball';
-    color: #126BA5;
-    font-size: 69px;
-    line-height: 86px;
-    height: 86px;
-    margin-bottom: 32.5px; 
+const TrackIt = styled.img`
+    width: 180px;
+    height: 178px;
+    margin-bottom: 32.5px;
 `;
 
 const Input = styled.input`
