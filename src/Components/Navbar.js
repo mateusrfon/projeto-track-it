@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export default function Navbar() {
     return (
         <Box>
-            <div>TrackIt</div>
+            <h1>TrackIt</h1>
             <img src="https://static8.depositphotos.com/1003924/886/i/600/depositphotos_8868243-stock-photo-spectrum-multicolored-eye-macro.jpg" />
         </Box>
     );
@@ -21,7 +21,7 @@ const Box = styled.div`
     justify-content: space-between;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 
-    div {
+    h1 {
         font-family: 'Playball';
         font-size: 39px;
         line-height: 49px;
@@ -36,4 +36,3 @@ const Box = styled.div`
         border-radius: 25.5px;
     }
 `;
-
