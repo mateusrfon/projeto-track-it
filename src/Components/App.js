@@ -4,6 +4,8 @@ import { createGlobalStyle } from 'styled-components';
 
 import Login from './Login';
 import Navbar from './Navbar';
+import Habits from './Habits';
+import Menu from './Menu';
 
 export default function App() {
   return (
@@ -23,14 +25,18 @@ export default function App() {
 
           <Route path='/habitos'>
             <Navbar />
+            <Habits />
+            <Menu />
           </Route>
 
           <Route path='/hoje'>
             <Navbar />
+            <Menu />
           </Route>
 
           <Route path='/historico'>
             <Navbar />
+            <Menu />
           </Route>
 
         </Switch>
