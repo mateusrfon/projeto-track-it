@@ -1,15 +1,33 @@
 import styled from 'styled-components';
+import axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
+import UserContext from '../contexts/UserContext';
+
+import ListHabits from './ListHabits';
 
 export default function Habits() {
+    const [habits, setHabits] = useState([]);
+    const { token } = useContext(UserContext);
+
+    useEffect(() => {
+        const config = {
+            headers: {
+                Authorization: token
+            }
+        }
+        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
+        request.then(response => {
+            setHabits(response.data);
+        });
+    }, [token]);
+
     return (
         <HabitsBody>
-            <MyHabits>
+            <AddHabits>
                 <p>Meus hábitos</p>
                 <div>+</div>
-            </MyHabits>
-            <Message>
-                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-            </Message>
+            </AddHabits>
+            <ListHabits habits={habits}/>
         </HabitsBody>
     );
 }
@@ -24,11 +42,12 @@ const HabitsBody = styled.div`
     flex-direction: column;
 `;
 
-const MyHabits = styled.div`
+const AddHabits = styled.div`
     display: flex;
     margin-top: 25px;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 28px;
     p {
         font-size: 23px;
         color: #126BA5;
@@ -43,11 +62,4 @@ const MyHabits = styled.div`
         display: flex;
         justify-content: center;
     }
-`;
-
-const Message = styled.p`
-    font-size: 18px;
-    line-height: 22px;
-    color: #666;
-    margin-top: 28px;
 `;

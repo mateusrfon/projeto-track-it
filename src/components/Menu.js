@@ -1,20 +1,22 @@
 import styled from 'styled-components';
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { Link } from 'react-router-dom';
 
 export default function Menu() {
     const percentage = 66;
+
     return (
         <MenuStyled>
-            <p>Hábitos</p>
-
-            <HojeCircle>
-                <CircularProgressbarWithChildren value={percentage} background backgroundPadding={6}  styles={buildStyles(HojeStyle)}>
-                    Hoje
-                </CircularProgressbarWithChildren>
-            </HojeCircle>
-
-            <p>Histórico</p>
+            <Link to='/habitos'><p>Hábitos</p></Link>
+            <Link to='/hoje'>
+                <HojeCircle>
+                    <CircularProgressbarWithChildren value={percentage} background backgroundPadding={6}  styles={buildStyles(HojeStyle)}>
+                        Hoje
+                    </CircularProgressbarWithChildren>
+                </HojeCircle>
+            </Link>
+            <Link to='/historico'><p>Histórico</p></Link>
         </MenuStyled>
     );
 }

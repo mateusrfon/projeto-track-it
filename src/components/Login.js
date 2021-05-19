@@ -7,12 +7,11 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login({ type }) {
+export default function Login({ type, setUserInfo }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [profilePicture, setProfilePicture] = useState('');
-    const [token, setToken] = useState('');
     const [wait, setWait] = useState(false);
     const history = useHistory();
 
@@ -36,7 +35,7 @@ export default function Login({ type }) {
         const data = { email, password };
         const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', data);
         request.then(response => {
-            setToken(response.token);
+            setUserInfo({token: `Bearer ${response.data.token}`, image: response.data.image });
             setWait(false);
             history.push("/hoje");
         })
@@ -79,8 +78,8 @@ export default function Login({ type }) {
             
             <Question>
                 {type === 'login' ?
-                    <Link to="/cadastro" style={{ color: 'inherit' }}>'Não tem uma conta? Cadastre-se!'</Link> : 
-                    <Link to="/" style={{ color: 'inherit' }}>'Já tem uma conta? Faça login!'</Link>
+                    <Link to="/cadastro">'Não tem uma conta? Cadastre-se!'</Link> : 
+                    <Link to="/">'Já tem uma conta? Faça login!'</Link>
                 }
             </Question>
         </Body>

@@ -1,10 +1,14 @@
 import styled from 'styled-components';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
 export default function Navbar() {
+    const { image } = useContext(UserContext);
+
     return (
         <Box>
             <h1>TrackIt</h1>
-            <img src="https://static8.depositphotos.com/1003924/886/i/600/depositphotos_8868243-stock-photo-spectrum-multicolored-eye-macro.jpg" />
+            <img src={image} alt="profile"/>
         </Box>
     );
 };
