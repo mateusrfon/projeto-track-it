@@ -1,31 +1,87 @@
 import styled from 'styled-components';
 
+import Loader from "react-loader-spinner";
 import Logo from '../images/Logo.svg';
 
+import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
+
 export default function Login({ type }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [profilePicture, setProfilePicture] = useState('');
+    const [token, setToken] = useState('');
+    const [wait, setWait] = useState(false);
+    const history = useHistory();
 
     function Signin() {
-        if (type === 'signin') {
-            return (
-                <>
-                    <Input placeholder='nome'/>
-                    <Input placeholder='foto'/>
-                </>
-            );
-        }
-        return '';
+        setWait(true);
+        const data = { email, name: username, image: profilePicture, password };
+        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', data);
+        request.then(() => {
+            setPassword('');
+            setWait(false);
+            history.push("/");
+        })
+        request.catch(() => {
+            setWait(false);
+            alert('Algo deu errado.');
+        });
+    }
+
+    function Login() {
+        setWait(true);
+        const data = { email, password };
+        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', data);
+        request.then(response => {
+            setToken(response.token);
+            setWait(false);
+            history.push("/hoje");
+        })
+        request.catch(() => {
+            setWait(false);
+            alert('Algo deu errado.');
+        });
     }
 
     return (
         <Body>
             <TrackIt src={Logo} alt="Logo"/>
-            <Input placeholder='email'/>
-            <Input placeholder='senha'/>
-            <Signin />
-            <Btn>{type === 'login' ? 'Entrar' : 'Cadastrar'}</Btn>
-            <Question>{type === 'login' ?
-             'Não tem uma conta? Cadastre-se!' : 
-             'Já tem uma conta? Faça login!'}
+
+            <Input disabled={wait} type="text" placeholder='email' value={email} onChange={e => setEmail(e.target.value)}/>
+            <Input disabled={wait} type="password" placeholder='senha' value={password} onChange={e => setPassword(e.target.value)}/>
+            
+            <Input disabled={wait} kindOf={type} type="text" placeholder='nome' value={username} onChange={e => setUsername(e.target.value)}/>
+            <Input disabled={wait} kindOf={type} placeholder='foto' value={profilePicture} onChange={e => setProfilePicture(e.target.value)}/>
+            
+            {type === 'login' ? 
+                <Btn onClick={Login}>{wait ? 
+                    <Loader
+                        type="ThreeDots"
+                        color="#fff"
+                        height={10}
+                        width={100}
+                        timeout={3000} //3 secs
+                    /> : 'Entrar'}
+                </Btn> : 
+                <Btn onClick={Signin}>{wait ? 
+                    <Loader
+                        type="ThreeDots"
+                        color="#fff"
+                        height={10}
+                        width={100}
+                        timeout={3000} //3 secs
+                    />  : 'Cadastrar'}
+                </Btn>
+            }
+            
+            <Question>
+                {type === 'login' ?
+                    <Link to="/cadastro" style={{ color: 'inherit' }}>'Não tem uma conta? Cadastre-se!'</Link> : 
+                    <Link to="/" style={{ color: 'inherit' }}>'Já tem uma conta? Faça login!'</Link>
+                }
             </Question>
         </Body>
     );
@@ -59,6 +115,9 @@ const Input = styled.input`
     ::placeholder {
         color: #D5D5D5;
         opacity: 1;
+    }
+    :nth-of-type(3),:nth-of-type(4) {
+        display: ${props => props.kindOf === 'signin' ? 'initial' : 'none'};
     }
 `; 
 
