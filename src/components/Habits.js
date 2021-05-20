@@ -6,6 +6,7 @@ import Loader from "react-loader-spinner";
 
 import ListHabits from './ListHabits';
 import WeekDays from './WeekDays';
+import SaveHabit from './SaveHabit';
 //import CreateHabit from './CreateHabit';
 
 export default function Habits() {
@@ -14,6 +15,7 @@ export default function Habits() {
     const [newHabit, setNewHabit] = useState({ name: '', days: []});
     const { token } = useContext(UserContext);
     const [wait, setWait] = useState(false);
+    const [reload, setReload] = useState(0);
 
     useEffect(() => {
         const config = {
@@ -25,7 +27,7 @@ export default function Habits() {
         request.then(response => {
             setHabits(response.data);
         });
-    }, [token]);
+    }, [token, reload]);
 
     function createHabit() {
         setCreate('true');
@@ -34,33 +36,10 @@ export default function Habits() {
     function cancelHabit() {
         if (!wait) {
             setCreate('false');
-            setNewHabit({ name: '', days: []})
         }
     }
 
-    function saveHabit() {
-        setWait(true);
-        if (newHabit.name.length > 0 && newHabit.days.length > 0) {
-            const config = {
-                headers: {
-                    Authorization: token
-                }
-            }
-            const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', newHabit, config);
-            request.then(() => {
-                setNewHabit({ name: '', days: []})
-                setWait(false);
-                setCreate('false');
-            });
-            request.catch(() => {
-                setWait(false);
-                alert('algo deu errado.')
-            });
-        } else {
-            alert('Preencha os campos com nome e ao menos 1 dia')
-            setWait(false);
-        }
-    }
+    const propsSaveHabit = { reload, setReload, setWait, setCreate, setNewHabit, newHabit, token};
 
     return (
         <HabitsBody>
@@ -74,7 +53,7 @@ export default function Habits() {
                 <WeekDays days={newHabit.days} create={create} newHabit={newHabit} setNewHabit={setNewHabit} wait={wait}/>
                 <Btns>
                     <p onClick={cancelHabit}>Cancelar</p>
-                    <div onClick={saveHabit}>
+                    <div onClick={() => SaveHabit(propsSaveHabit)}>
                         {wait ? 
                             <Loader
                                 type="ThreeDots"
@@ -89,7 +68,7 @@ export default function Habits() {
                 </Btns>
             </NewHabit>
 
-            <ListHabits token={token} habits={habits}/>
+            <ListHabits token={token} habits={habits} setReload={setReload} reload={reload}/>
         </HabitsBody>
     );
 }
