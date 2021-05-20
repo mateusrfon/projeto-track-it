@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import trash from '../images/Trash.svg'
+import trash from '../../images/Trash.svg'
 
 import WeekDays from './WeekDays';
 import DeletHabit from './DeletHabit';

@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-
+import UserContext from '../contexts/UserContext';
 
 import Login from './Login';
 import Navbar from './Navbar';
-import Habits from './Habits';
+import Habits from './habits/Habits';
 import Menu from './Menu';
-import UserContext from '../contexts/UserContext';
+import Today from './today/Today';
+import History from './History';
 
 export default function App() {
   const [userInfo, setUserInfo] = useState({ token: '', image: ''});
   
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle/>
 
       <BrowserRouter>
         <Switch>
@@ -23,24 +24,26 @@ export default function App() {
             <Login type='login' setUserInfo={setUserInfo}/>
           </Route>
           <Route path='/cadastro'>
-            <Login type='signin' />
+            <Login type='signin'/>
           </Route>
 
           <UserContext.Provider value={userInfo}>
             <Route path='/habitos'>
-              <Navbar />
-              <Habits />
-              <Menu />
+              <Navbar/>
+              <Habits/>
+              <Menu/>
             </Route>
 
             <Route path='/hoje'>
-              <Navbar />
-              <Menu />
+              <Navbar/>
+              <Today/>
+              <Menu/>
             </Route>
 
             <Route path='/historico'>
-              <Navbar />
-              <Menu />
+              <Navbar/>
+              <History />
+              <Menu/>
             </Route>
           </UserContext.Provider>
 

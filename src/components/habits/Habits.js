@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import UserContext from '../contexts/UserContext';
+import UserContext from '../../contexts/UserContext';
 import Loader from "react-loader-spinner";
 
+import ScreenBody from '../ScreenBody';
 import ListHabits from './ListHabits';
 import WeekDays from './WeekDays';
 import SaveHabit from './SaveHabit';
@@ -42,7 +43,7 @@ export default function Habits() {
     const propsSaveHabit = { reload, setReload, setWait, setCreate, setNewHabit, newHabit, token};
 
     return (
-        <HabitsBody>
+        <ScreenBody>
             <AddHabits>
                 <p>Meus hábitos</p>
                 <div onClick={createHabit}>+</div>
@@ -69,19 +70,9 @@ export default function Habits() {
             </NewHabit>
 
             <ListHabits token={token} habits={habits} setReload={setReload} reload={reload}/>
-        </HabitsBody>
+        </ScreenBody>
     );
 }
-
-const HabitsBody = styled.div`
-    width: 100%;
-    height: calc(100vh - 140px);
-    margin-top: 70px;
-    background-color: #F2F2F2;
-    padding: 0 18px 0 20px;
-    display: flex;
-    flex-direction: column;
-`;
 
 const AddHabits = styled.div`
     display: flex;
