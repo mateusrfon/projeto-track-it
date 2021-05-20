@@ -49,7 +49,7 @@ export default function Login({ type, setUserInfo }) {
         <Body>
             <TrackIt src={Logo} alt="Logo"/>
 
-            <Input disabled={wait} type="text" placeholder='email' value={email} onChange={e => setEmail(e.target.value)}/>
+            <Input disabled={wait} type="email" placeholder='email' value={email} onChange={e => setEmail(e.target.value)}/>
             <Input disabled={wait} type="password" placeholder='senha' value={password} onChange={e => setPassword(e.target.value)}/>
             
             <Input disabled={wait} kindOf={type} type="text" placeholder='nome' value={username} onChange={e => setUsername(e.target.value)}/>

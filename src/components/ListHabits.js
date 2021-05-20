@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import trash from '../images/Trash.svg'
 
 import WeekDays from './WeekDays';
+import DeletHabit from './DeletHabit';
 
-export default function ListHabits({ habits }) {
+export default function ListHabits({ habits, token }) {
     if (habits.length > 0) {
         return (
             <>
@@ -12,7 +13,7 @@ export default function ListHabits({ habits }) {
                         <HabitsBox key={e.id}>
                             <p>{e.name}</p>
                             <WeekDays days={e.days}/>
-                            <img src={trash} alt="trash-icon"/>
+                            <img src={trash} onClick={() => DeletHabit(e.id, token)} alt="trash-icon"/>
                         </HabitsBox>
                     );
                 })}
