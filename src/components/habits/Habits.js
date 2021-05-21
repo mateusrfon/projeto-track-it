@@ -2,19 +2,20 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
+import HabitsContext from '../../contexts/HabitsContext';
 import Loader from "react-loader-spinner";
 
 import ScreenBody from '../ScreenBody';
 import ListHabits from './ListHabits';
 import WeekDays from './WeekDays';
 import SaveHabit from './SaveHabit';
-//import CreateHabit from './CreateHabit';
 
-export default function Habits() {
+export default function Habits({ setHabitsRatio }) {
     const [habits, setHabits] = useState([]);
     const [create, setCreate] = useState('false');
-    const [newHabit, setNewHabit] = useState({ name: '', days: []});
+    const [newHabit, setNewHabit] = useState({ name: '', days: [] });
     const { token } = useContext(UserContext);
+    const habitsContext = useContext(HabitsContext);
     const [wait, setWait] = useState(false);
     const [reload, setReload] = useState(0);
 
@@ -40,7 +41,7 @@ export default function Habits() {
         }
     }
 
-    const propsSaveHabit = { reload, setReload, setWait, setCreate, setNewHabit, newHabit, token};
+    const propsSaveHabit = { reload, setReload, setWait, setCreate, setNewHabit, newHabit, token, setHabitsRatio, habitsContext};
 
     return (
         <ScreenBody>
@@ -69,7 +70,7 @@ export default function Habits() {
                 </Btns>
             </NewHabit>
 
-            <ListHabits token={token} habits={habits} setReload={setReload} reload={reload}/>
+            <ListHabits token={token} habits={habits} setReload={setReload} reload={reload} setHabitsRatio={setHabitsRatio}/>
         </ScreenBody>
     );
 }

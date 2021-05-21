@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import UserContext from '../contexts/UserContext';
+import HabitsContext from '../contexts/HabitsContext';
 
 import Login from './in/Login';
 import Signin from './in/Signin';
@@ -12,42 +13,37 @@ import Today from './today/Today';
 import History from './History';
 
 export default function App() {
-  const [userInfo, setUserInfo] = useState({ token: '', image: ''});
-  
+  const [userInfo, setUserInfo] = useState({ token: '', image: '' });
+  const [habitsRatio, setHabitsRatio] = useState({ habitsDone: 0, habitsLength: 0 });
+
   return (
     <>
       <GlobalStyle/>
-
       <BrowserRouter>
         <Switch>
-
           <Route path='/' exact>
             <Login type='login' setUserInfo={setUserInfo}/>
           </Route>
           <Route path='/cadastro'>
             <Signin/>
           </Route>
-
           <UserContext.Provider value={userInfo}>
-            <Route path='/habitos'>
-              <Navbar/>
-              <Habits/>
-              <Menu/>
-            </Route>
-
-            <Route path='/hoje'>
-              <Navbar/>
-              <Today/>
-              <Menu/>
-            </Route>
-
-            <Route path='/historico'>
-              <Navbar/>
-              <History />
-              <Menu/>
-            </Route>
+            <HabitsContext.Provider value={habitsRatio}>
+              <Route path='/'>
+                <Navbar/>
+                <Route path='/habitos'>
+                  <Habits setHabitsRatio={setHabitsRatio}/>
+                </Route>
+                <Route path='/hoje'>
+                  <Today setHabitsRatio={setHabitsRatio}/>
+                </Route>
+                <Route path='/historico'>
+                  <History />
+                </Route>
+                <Menu/>
+              </Route>
+            </HabitsContext.Provider>
           </UserContext.Provider>
-
         </Switch>
       </BrowserRouter>
     </>

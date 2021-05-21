@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
@@ -6,11 +6,26 @@ import Loader from "react-loader-spinner";
 import Logo from '../../images/Logo.svg';
 import { InBody, TrackIt, Input, Btn, Question } from './Styles';
 
-export default function Login({ type, setUserInfo }) {
+export default function Login({ setUserInfo }) {
     const [data, setData] = useState({ email: '', password: '' });
     const { email, password } = data;
     const [wait, setWait] = useState(false);
     const history = useHistory();
+
+    useEffect(() => {
+        setWait(true);
+        const newData = JSON.parse(localStorage.getItem('login'));
+        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', newData);
+        request.then(response => {
+            const userInfo = { token: `Bearer ${response.data.token}`, image: response.data.image };
+            setUserInfo(userInfo);
+            setWait(false);
+            history.push("/hoje");
+        })
+        request.catch(() => {
+            setWait(false);
+        });
+    }, [])
 
     function Login(event) {
         event.preventDefault();
@@ -18,8 +33,10 @@ export default function Login({ type, setUserInfo }) {
         const newData = { email, password };
         const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', newData);
         request.then(response => {
-            setUserInfo({token: `Bearer ${response.data.token}`, image: response.data.image });
+            const userInfo = { token: `Bearer ${response.data.token}`, image: response.data.image };
+            setUserInfo(userInfo);
             setWait(false);
+            localStorage.setItem('login', JSON.stringify(newData));
             history.push("/hoje");
         })
         request.catch(() => {

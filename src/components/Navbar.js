@@ -1,14 +1,21 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
+import { useHistory } from 'react-router-dom';
 
 export default function Navbar() {
     const { image } = useContext(UserContext);
+    const history = useHistory();
 
+    function logout() {
+        localStorage.removeItem('login');
+        history.push('/');
+    }
     return (
         <Box>
             <h1>TrackIt</h1>
             <img src={image} alt="profile"/>
+            <Logout onClick={logout}>Logout</Logout>
         </Box>
     );
 };
@@ -39,4 +46,12 @@ const Box = styled.div`
         height: 51px;
         border-radius: 25.5px;
     }
+`;
+
+const Logout = styled.div`
+    position: fixed;
+    top: 60px;
+    right: 22px;
+    font-size: 8px;
+    color: #fff;
 `;

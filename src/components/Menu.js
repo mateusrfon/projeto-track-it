@@ -3,8 +3,12 @@ import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-pro
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from 'react-router-dom';
 
+import { useContext } from 'react';
+import HabitsContext from '../contexts/HabitsContext';
+
 export default function Menu() {
-    const percentage = 66;
+    const { habitsDone, habitsLength } = useContext(HabitsContext);
+    const percentage = habitsLength === 0 ? 100 : (habitsDone/habitsLength)*100;
 
     return (
         <MenuStyled>

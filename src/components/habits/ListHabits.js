@@ -4,7 +4,12 @@ import trash from '../../images/Trash.svg'
 import WeekDays from './WeekDays';
 import DeletHabit from './DeletHabit';
 
-export default function ListHabits({ habits, token, reload, setReload }) {
+import HabitsContext from '../../contexts/HabitsContext';
+import { useContext } from 'react';
+
+export default function ListHabits({ habits, token, reload, setReload, setHabitsRatio }) {
+    const habitsContext = useContext(HabitsContext);
+
     if (habits.length > 0) {
         return (
             <>
@@ -13,7 +18,7 @@ export default function ListHabits({ habits, token, reload, setReload }) {
                         <HabitsBox key={e.id}>
                             <p>{e.name}</p>
                             <WeekDays days={e.days}/>
-                            <img src={trash} onClick={() => DeletHabit(e.id, token, reload, setReload)} alt="trash-icon"/>
+                            <img src={trash} onClick={() => DeletHabit(e.id, e.days, token, reload, setReload, habitsContext, setHabitsRatio)} alt="trash-icon"/>
                         </HabitsBox>
                     );
                 })}

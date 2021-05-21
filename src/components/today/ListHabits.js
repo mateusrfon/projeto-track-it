@@ -1,8 +1,29 @@
 import styled from 'styled-components';
 import vector from '../../images/V.svg';
+import { useContext } from 'react';
+import axios from 'axios';
 
-export default function ListHabits({ habit }) {
+import UserContext from '../../contexts/UserContext';
+
+export default function ListHabits({ habit, reload, setReload }) {
+    const { token } = useContext(UserContext);
     const newRecord = (habit.highestSequence > 0) && (habit.highestSequence === habit.currentSequence);
+    
+    function habitCheck() {
+        const config = {
+            headers: {
+                Authorization: token
+            }
+        }
+        if (!habit.done) {
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config);
+            request.then(() => setReload(reload + 1));
+        } else {
+            const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config);
+            request.then(() => setReload(reload + 1));
+        }
+    }
+    
     return (
         <HabitBox>
             <div>
@@ -14,8 +35,8 @@ export default function ListHabits({ habit }) {
                     Seu recorde: <span>{habit.highestSequence} dias</span>
                 </Status>
             </div>
-            <Check active={habit.done.toString()}>
-                <img src={vector}/>
+            <Check active={habit.done.toString()} onClick={habitCheck}>
+                <img src={vector} alt="check-box"/>
             </Check>
         </HabitBox>
     );
