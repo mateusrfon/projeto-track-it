@@ -3,7 +3,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import UserContext from '../contexts/UserContext';
 
-import Login from './Login';
+import Login from './in/Login';
+import Signin from './in/Signin';
 import Navbar from './Navbar';
 import Habits from './habits/Habits';
 import Menu from './Menu';
@@ -24,7 +25,7 @@ export default function App() {
             <Login type='login' setUserInfo={setUserInfo}/>
           </Route>
           <Route path='/cadastro'>
-            <Login type='signin'/>
+            <Signin/>
           </Route>
 
           <UserContext.Provider value={userInfo}>
